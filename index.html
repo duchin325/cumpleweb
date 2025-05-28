@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Confirmá tu Asistencia! - Fiesta de 30 Años</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '🎉';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+        }
+
+        .header::after {
+            content: '🎂';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            animation: bounce 2s infinite 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .attendance-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .attendance-card {
+            background: #f8f9fa;
+            border: 3px solid #e1e8ed;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .attendance-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .attendance-card.selected {
+            border-color: #ff6b6b;
+            background: linear-gradient(135deg, #ff6b6b, #feca57);
+            color: white;
+        }
+
+        .attendance-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .attendance-card .text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 18px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .guest-list {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #e1e8ed;
+        }
+
+        .guest-list h3 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3rem;
+        }
+
+        .guest-item {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+
+        .guest-item.attending {
+            border-left-color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .guest-item.not-attending {
+            border-left-color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .guest-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .guest-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.attending {
+            background: #28a745;
+            color: white;
+        }
+
+        .status-badge.not-attending {
+            background: #dc3545;
+            color: white;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .admin-panel {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            border-top: 2px solid #e1e8ed;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .admin-header:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .admin-header h3 {
+            color: #333;
+            font-size: 1.2rem;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .admin-content {
+            display: none;
+        }
+
+        .admin-content.show {
+            display: block;
+        }
+
+        .admin-panel.expanded .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .download-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .download-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(220, 53, 69, 0.3);
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+
+            .attendance-options {
+                grid-template-columns: 1fr;
+            }
+
+            .attendance-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>¡Mis 30 Años!</h1>
+            <p>Confirmá tu asistencia y celebremos juntos</p>
+        </div>
+
+        <div class="form-container">
+            <div class="success-message" id="successMessage">
+                ¡Gracias por confirmar! Tu respuesta ha sido registrada 🎉
+            </div>
+
+            <form id="rsvpForm">
+                <div class="form-group">
+                    <label for="name">Tu nombre completo *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email (opcional)</label>
+                    <input type="email" id="email" name="email">
+                </div>
+
+                <div class="form-group">
+                    <label>¿Vas a asistir? *</label>
+                    <div class="attendance-options">
+                        <div class="attendance-card" data-value="yes">
+                            <span class="icon">🎉</span>
+                            <span class="text">¡Sí, ahí estaré!</span>
+                        </div>
+                        <div class="attendance-card" data-value="no">
+                            <span class="icon">😔</span>
+                            <span class="text">No podré asistir</span>
+                        </div>
+                    </div>
+                    <input type="hidden" id="attendance" name="attendance" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="message">Mensaje adicional (opcional)</label>
+                    <textarea id="message" name="message" placeholder="¿Algún comentario, sugerencia o saludo especial?"></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">Confirmar Asistencia</button>
+            </form>
+
+            <div class="guest-list" id="guestList">
+                <h3>Lista de Invitados</h3>
+                <div id="guests"></div>
+            </div>
+
+            <div class="admin-panel" id="adminPanel">
+                <div class="admin-header" onclick="toggleAdmin()">
+                    <h3>🔧 Panel de Administrador</h3>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="admin-content" id="adminContent">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="totalGuests">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="attendingCount">0</div>
+                            <div class="stat-label">Asistirán</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="notAttendingCount">0</div>
+                            <div class="stat-label">No asistirán</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="attendanceRate">0%</div>
+                            <div class="stat-label">% Asistencia</div>
+                        </div>
+                    </div>
+                    
+                    <div class="download-buttons">
+                        <button class="download-btn" onclick="downloadJSON()">
+                            📄 Descargar JSON
+                        </button>
+                        <button class="download-btn" onclick="downloadCSV()">
+                            📊 Descargar CSV
+                        </button>
+                    </div>
+                    
+                    <button class="clear-btn" onclick="clearAllData()">
+                        🗑️ Limpiar todos los datos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Array para almacenar las confirmaciones
+        let guests = [];
+
+        // Elementos del DOM
+        const form = document.getElementById('rsvpForm');
+        const attendanceCards = document.querySelectorAll('.attendance-card');
+        const attendanceInput = document.getElementById('attendance');
+        const successMessage = document.getElementById('successMessage');
+        const guestsList = document.getElementById('guests');
+
+        // Función para cargar datos guardados (solo para compatibilidad cuando se use en producción)
+        function loadSavedData() {
+            try {
+                const savedData = localStorage.getItem('birthdayRSVP');
+                if (savedData) {
+                    guests = JSON.parse(savedData);
+                    updateGuestList();
+                    updateStats();
+                }
+            } catch (e) {
+                // localStorage no disponible, usar solo memoria
+                console.log('localStorage no disponible, usando solo memoria durante la sesión');
+            }
+        }
+
+        // Función para guardar datos (solo cuando localStorage esté disponible)
+        function saveData() {
+            try {
+                localStorage.setItem('birthdayRSVP', JSON.stringify(guests));
+            } catch (e) {
+                // localStorage no disponible, los datos se mantienen solo en memoria
+                console.log('Datos guardados en memoria durante la sesión');
+            }
+        }
+
+        // Función para alternar panel de admin
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            const content = document.getElementById('adminContent');
+            
+            panel.classList.toggle('expanded');
+            content.classList.toggle('show');
+        }
+
+        // Función para actualizar estadísticas
+        function updateStats() {
+            const total = guests.length;
+            const attending = guests.filter(g => g.attendance === 'yes').length;
+            const notAttending = guests.filter(g => g.attendance === 'no').length;
+            const rate = total > 0 ? Math.round((attending / total) * 100) : 0;
+
+            document.getElementById('totalGuests').textContent = total;
+            document.getElementById('attendingCount').textContent = attending;
+            document.getElementById('notAttendingCount').textContent = notAttending;
+            document.getElementById('attendanceRate').textContent = rate + '%';
+        }
+
+        // Función para descargar JSON
+        function downloadJSON() {
+            if (guests.length === 0) {
+                alert('No hay datos para descargar');
+                return;
+            }
+
+            const dataStr = JSON.stringify(guests, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `confirmaciones-cumple-30-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Función para descargar CSV
+        function downloadCSV() {
+            if (guests.length === 0) {
+                alert('No hay datos para descargar');
+                return;
+            }
+
+            const headers = ['Nombre', 'Email', 'Asistencia', 'Mensaje', 'Fecha de Confirmación'];
+            const csvContent = [
+                headers.join(','),
+                ...guests.map(guest => [
+                    `"${guest.name}"`,
+                    `"${guest.email || ''}"`,
+                    guest.attendance === 'yes' ? 'Asistirá' : 'No asistirá',
+                    `"${guest.message || ''}"`,
+                    `"${guest.timestamp}"`
+                ].join(','))
+            ].join('\n');
+
+            const dataBlob = new Blob([csvContent], {type: 'text/csv;charset=utf-8;'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `confirmaciones-cumple-30-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        // Función para limpiar todos los datos
+        function clearAllData() {
+            if (confirm('¿Estás seguro de que querés eliminar todas las confirmaciones? Esta acción no se puede deshacer.')) {
+                guests = [];
+                try {
+                    localStorage.removeItem('birthdayRSVP');
+                } catch (e) {
+                    // localStorage no disponible
+                }
+                updateGuestList();
+                updateStats();
+                alert('Todos los datos han sido eliminados');
+            }
+        }
+
+        // Manejar selección de asistencia
+        attendanceCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remover selección anterior
+                attendanceCards.forEach(c => c.classList.remove('selected'));
+                
+                // Agregar selección actual
+                card.classList.add('selected');
+                attendanceInput.value = card.dataset.value;
+            });
+        });
+
+        // Manejar envío del formulario
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(form);
+            const guestData = {
+                id: Date.now(),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                attendance: formData.get('attendance'),
+                message: formData.get('message'),
+                timestamp: new Date().toLocaleString('es-AR')
+            };
+
+            // Verificar si el invitado ya confirmó
+            const existingGuestIndex = guests.findIndex(g => 
+                g.name.toLowerCase() === guestData.name.toLowerCase()
+            );
+
+            if (existingGuestIndex !== -1) {
+                // Actualizar confirmación existente
+                guests[existingGuestIndex] = guestData;
+            } else {
+                // Agregar nueva confirmación
+                guests.push(guestData);
+            }
+
+            // Guardar datos
+            saveData();
+
+            // Mostrar mensaje de éxito
+            successMessage.style.display = 'block';
+            successMessage.scrollIntoView({ behavior: 'smooth' });
+
+            // Resetear formulario
+            form.reset();
+            attendanceCards.forEach(c => c.classList.remove('selected'));
+            attendanceInput.value = '';
+
+            // Actualizar lista de invitados y estadísticas
+            updateGuestList();
+            updateStats();
+
+            // Ocultar mensaje de éxito después de 3 segundos
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        });
+
+        // Función para actualizar la lista de invitados
+        function updateGuestList() {
+            if (guests.length === 0) {
+                guestsList.innerHTML = '<p style="text-align: center; color: #666;">Aún no hay confirmaciones</p>';
+                return;
+            }
+
+            const html = guests.map(guest => {
+                const statusClass = guest.attendance === 'yes' ? 'attending' : 'not-attending';
+                const statusText = guest.attendance === 'yes' ? 'Asistirá' : 'No asistirá';
+                
+                return `
+                    <div class="guest-item ${statusClass}">
+                        <div class="guest-info">
+                            <h4>${guest.name}</h4>
+                            <p>${guest.timestamp}</p>
+                            ${guest.message ? `<p><em>"${guest.message}"</em></p>` : ''}
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            }).join('');
+
+            guestsList.innerHTML = html;
+
+            // Mostrar estadísticas
+            const attending = guests.filter(g => g.attendance === 'yes').length;
+            const notAttending = guests.filter(g => g.attendance === 'no').length;
+            
+            document.querySelector('.guest-list h3').innerHTML = `
+                Lista de Invitados 
+                <small style="color: #666; font-weight: normal;">
+                    (${attending} confirmados, ${notAttending} no asistirán)
+                </small>
+            `;
+        }
+
+        // Inicializar lista
+        loadSavedData(); // Intentar cargar datos guardados
+        updateGuestList();
+        updateStats();
+    </script>
+</body>
+</html>
